@@ -1,23 +1,24 @@
 .PHONY : all clean
 
-units_l := $(wildcard flex/*.l)
-
-nombres := $(basename ${units_l})
-nombres := $(notdir ${nombres})
-
-units_c := $(addprefix src/, ${nombres})
-units_c := $(addsuffix .c, ${units_c})
-
-ejecutables := $(addprefix bin/, ${nombres})
-
-all : ${ejecutables}
-	@echo wadafac
+all : bin/compactador bin/espaciador bin/tabulizador
 
 clean :
 	rm -rf bin/* resultado/* src/* tmp/*
 
-src/%.c : ${units_l}
-	flex -o $@ $<
+bin/compactador : src/compactador.c
+	gcc -o bin/compactador src/compactador.c
 
-bin/% : ${units_c}
-	gcc -o $@ $<
+src/compactador.c : flex/compactador.l
+	flex -o src/compactador.c flex/compactador.l
+
+bin/espaciador : src/espaciador.c
+	gcc -o bin/espaciador src/espaciador.c
+
+src/espaciador.c : flex/espaciador.l
+	flex -o src/espaciador.c flex/espaciador.l
+
+bin/tabulizador : src/tabulizador.c
+	gcc -o bin/tabulizador src/tabulizador.c
+
+src/tabulizador.c : flex/tabulizador.l
+	flex -o src/tabulizador.c flex/tabulizador.l
