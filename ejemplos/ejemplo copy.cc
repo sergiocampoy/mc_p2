@@ -1,26 +1,10 @@
-#include<iostream>// inline
+#include <iostream>
 #include "string"
-#include <set>
-// normal
 using namespace std;
-
-class Prueba {
-private:
-    int numero;
-public:
-    Prueba(int n) {
-        // normal con tabs
-        numero = n;
-    }
-    int suma(int n) {
-        return numero + n; // inline
-    }
-};
-
 int main () {
     int edad;
     cout << "cual es tu edad?" << endl;
-    cin>>edad;
+    cin >> edad;
     if (edad > 18) {
         cout << "Eres mayor de edad!" << endl;
     } else {

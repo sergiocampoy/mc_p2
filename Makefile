@@ -1,24 +1,36 @@
 .PHONY : all clean
 
-all : bin/compactador bin/espaciador bin/tabulizador
+all : bin/primero bin/segundo bin/tercero bin/cuarto
+	./script.sh ejemplo
 
 clean :
 	rm -rf bin/* resultado/* src/* tmp/*
 
-bin/compactador : src/compactador.c
-	gcc -o bin/compactador src/compactador.c
+# Creación de binarios
 
-src/compactador.c : flex/compactador.l
-	flex -o src/compactador.c flex/compactador.l
+src/primero.c : flex/primero.l
+	flex -o src/primero.c flex/primero.l
 
-bin/espaciador : src/espaciador.c
-	gcc -o bin/espaciador src/espaciador.c
+bin/primero : src/primero.c
+	gcc -o bin/primero src/primero.c
 
-src/espaciador.c : flex/espaciador.l
-	flex -o src/espaciador.c flex/espaciador.l
 
-bin/tabulizador : src/tabulizador.c
-	gcc -o bin/tabulizador src/tabulizador.c
+src/segundo.c : flex/segundo.l
+	flex -o src/segundo.c flex/segundo.l
 
-src/tabulizador.c : flex/tabulizador.l
-	flex -o src/tabulizador.c flex/tabulizador.l
+bin/segundo : src/segundo.c
+	gcc -o bin/segundo src/segundo.c
+
+
+src/tercero.c : flex/tercero.l
+	flex -o src/tercero.c flex/tercero.l
+
+bin/tercero : src/tercero.c
+	gcc -o bin/tercero src/tercero.c
+
+
+src/cuarto.c : flex/cuarto.l
+	flex -o src/cuarto.c flex/cuarto.l
+
+bin/cuarto : src/cuarto.c
+	gcc -o bin/cuarto src/cuarto.c
