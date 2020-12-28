@@ -1,20 +1,25 @@
 %option noyywrap
 
-espacio [\n\t\ ]*
+espacio [\t\ ]*
+salto [\n\t\ ]*
 operador [\+-\*/\?\<\>]
 
-%x cml cul
+%x cml inline multi_inline
 
 %%
 
-{espacio} {printf(" ");} // "comprime" \n \t y " " en 1 espacio
-"//" { printf(yytext); BEGIN(cul); }
-"/*" { printf(yytext); BEGIN(cml); } // https://stackoverflow.com/questions/8886410/stripping-multiline-comments-in-c-with-regex
+{salto} {printf(" ");} // "comprime" \n \t y " " en 1 espacio
 
-<cml>"*/"\n? { printf(yytext); BEGIN(INITIAL); }
-<cml>.* { printf(yytext); }
+{espacio}"//" { printf(" //"); BEGIN(inline); } // comentario inline
+{salto}"//" { printf("\n//"); BEGIN(inline); } // al inicio de la linea
+<inline>\n{salto}? { printf("\n"); BEGIN(INITIAL); }
 
-<cul>.*\n { printf(yytext); BEGIN(INITIAL); }
+
+{espacio}"/*" { printf(" /*"); BEGIN(multi_inline); } // multilinea inline
+<multi_inline>"*/"{espacio} { printf("*/ "); BEGIN(INITIAL); }
+
+{salto}"/*" { printf("\n/*"); BEGIN(cml); } // multilinea normal
+<cml>"*/"{salto} { printf("*/\n"); BEGIN(INITIAL); }
 
 %%
 

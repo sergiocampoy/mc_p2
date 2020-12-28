@@ -4,6 +4,10 @@
 // normal
 using namespace std;
 
+/*
+comentario multilinea
+*/
+
 class Prueba {
 private:
     int numero;
@@ -12,7 +16,7 @@ public:
         // normal con tabs
         numero = n;
     }
-    int suma(int n) {
+    int suma(int n /*comentario multilinea en mitad para tocar los huevos*/) {
         return numero + n; // inline
     }
 };
@@ -23,7 +27,7 @@ int main () {
     cin>>edad;
     if (edad > 18) {
         cout << "Eres mayor de edad!" << endl;
-    } else {
+    } else { // en teoría esto está roto
         cout << "A casita" << endl;
     }
     for (unsigned int i = 0; i < 10; i++) {
