@@ -1,0 +1,193 @@
+\documentclass[10pt]{article}
+\usepackage{package}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{float}
+\usepackage[spanish]{babel}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{multicol}
+
+\graphicspath{ {./images/} }
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Sergio Campoy Maldonado}
+\lhead{MC - Práctica 2}
+\rfoot{Pág. \thepage}
+
+\title{Práctica 3 - Modelos de computación}
+\author{Sergio Campoy Maldonado}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    language=c++,
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=mystyle}
+
+\begin{document}
+    \input{portada/portada.tex}
+
+    \tableofcontents
+
+    \pagebreak
+
+    \section{Descripción del problema}
+
+    Con esta práctica, he intentado resolver uno de los problemas que surge de trabajar en grupo en un proyecto de \texttt{c++}: La discrepancia de estilo en el código.
+    
+    Ya que la gente tiene distintas preferencias, el código puede acabar siendo un desastre: unas secciones indentadas con tabulador, otras con 3 espacios y otras con 2; algunas llaves que abren una función están al comienzo de la línea, otras al final, etc. Los siguientes códigos son un ejemplo de a lo que me refiero.
+
+    \begin{multicols}{2}
+        \begin{lstlisting}
+for (int i=0; i<10; i++) {
+    if (i%2) {
+        cout<<"Es par!"<<endl;
+    } else {
+        cout<<"Es impar"<<endl;
+    }
+}
+
+
+
+
+        \end{lstlisting}
+        \columnbreak
+        \begin{lstlisting}
+for (int i = 0; i < 10; i ++ )
+{
+  if (i % 2)
+  {
+    cout << "Es par!" << endl;
+  }
+  else
+  {
+    cout << "Es impar" << endl;
+  }
+}
+        \end{lstlisting}
+    \end{multicols}
+
+    El objetivo que me he propuesto para la práctica es crear un programa de \emph{flex} que, dados dos códigos de c++ iguales con distinto estilo, genere como resultado un mismo programa.
+
+    \begin{lstlisting}
+for (int i = 0; i < 10; i ++ ) {
+    if (i % 2) {
+        cout << "Es par!" << endl;
+    } else { 
+        cout << "Es impar" << endl;
+    }
+}
+    \end{lstlisting}
+
+    \pagebreak
+
+    \section{Descripción de la solución}
+
+    La solución compone de \emph{4 ficheros flex}, un \emph{script de ejecución} y un \emph{Makefile}. Cada uno de los \emph{programas de flex} tiene un objetivo: el primero añade espacios para que no haya operadores pegados con palabras o números, el segundo ``comprime'' todos los tabuladores, saltos de línea y espacios en un solo espacio, el tercero añade los saltos de línea y el cuarto tabula para obtener el resultado final.
+
+    \subsection{Uso}
+
+    \begin{enumerate}
+        \item Primero hay que compilar los ficheros, para lo que basta con ejecutar \texttt{make}.
+        \item Luego hay que añadir el fichero que se quiere convertir a la carpeta \texttt{ejemplos} y se le cambia la terminación a \texttt{.cc}
+        \item Una vez añadido, ejecutar el script con el nombre del fichero (sin la terminación) y el archivo resultante se genera en \texttt{resultado}. Este paso solo es necesario si se ha añadido un fichero extra a ejemplos, ya que el \emph{makefile} llama al script con los ejemplos que proporciono.
+    \end{enumerate}
+
+    \subsection{Carpetas}
+    
+    La estructura de carpetas es la siguiente:
+
+    \begin{itemize}
+        \item \texttt{ejemplos} - Carpeta con con archivos \texttt{.cc} de ejemplo. Aquí se tiene que poner el archivo que se quiere convertir.
+        \item \texttt{flex} - Carpeta con los archivos de flex.
+        \item \texttt{src} - Aquí se guardan los archivos \texttt{.c} que generan los archivos \texttt{.flex}.
+        \item \texttt{bin} - En esta carpeta se generan los ejecutables.
+        \item \texttt{tmp} - En esta carpeta se guardan los archivos intermedios. No es necesario guardarlos, pero son útiles para comprobar qué hace el programa en cada paso.
+        \item \texttt{resutado} - Aquí se guarda el código resutado de ejecutar el programa sobre un archivo de la carpeta \texttt{ejemplo}.
+    \end{itemize}
+
+    \subsection{Ficheros}
+    \subsubsection{Makefile}
+    El makefile es bastante sencillo. Tiene dos reglas \texttt{.PHONY}: \texttt{clean} y \texttt{all}, que se encargan de borrar los archivos temporales (\texttt{src, bin, tmp y resutado}); y de compilar los ficheros y ejecutar el script respectivamente.
+
+    También tiene dos reglas por cada fichero \texttt{.l} para generar el \texttt{.c} y el binario correspondientes.
+
+    \begin{lstlisting}[language=make]
+src/primero.c : flex/primero.l
+    flex -o src/primero.c flex/primero.l
+
+bin/primero : src/primero.c
+    gcc -o bin/primero src/primero.c
+    \end{lstlisting}
+
+    \subsubsection{script.sh}
+
+    El script recibe un argumento, que es el nombre del fichero a convertir sin el path ni la terminación (\texttt{ejemplos/ejemplo.cc} sería \texttt{ejemplo}) y el script ejecuta los cuatro binarios en orden sobre el fichero. Los pasos intermedios los guarda en \texttt{tmp} y el final en \texttt{resultado}.
+
+    \lstinputlisting[language=sh]{../script.sh}
+
+    \subsubsection{primero.l}
+    El objetivo del primer archivo es añadir espacios para evitar que haya operadores ``pegados'' con palabras. Al principio declaro variables relacionadas con los operadores y las llaves. Al final las importantes son \texttt{llave}, que detecta cualquier llave o corchete, y \texttt{ops}, que detecta cualquiera de los operadores de \texttt{c++}.
+
+    También declaro varias condiciones de inicio. El objetivo de estas es que no se modifique nada que haya en los comentarios, entre comillas o en los includes. Para ello, al leer unas comillas dobles, simples, el inicio de un comentario o \#include hago \texttt{BEGIN(condicion)} y después al leer el final hago \texttt{BEGIN(INITIAL)} para volver al estado inicial.
+
+    \subsubsection{segundo.l}
+    El segundo archivo ``comprime'' los espacios en blanco y reduce el código a una línea (salvo que haya comentarios). Gracias a esto consigo homogeneizar todas las diferencias de espaciado (espacios vs. tabuladores, que haya más o menos indentación, que haya uno o más espacios entre los operadores, etc).
+
+    La carga principal de este fichero la tiene la primera regla, que convierte cualquier espacio, tabulador o espacio en uno solo (\verb|[\n\t\ ]* { printf(" "); }|).
+
+    El resto de reglas sirven para dos cosas: que no se modifiquen los espacios de los comentarios y para diferenciar los comentarios que están en una linea propia de los que están detrás de código al final de una linea. En esencia funcionan de la misma manera que las condiciones iniciales del primer archivo, pero también añaden espacios o saltos de línea en función del caso.
+
+    \subsubsection{tercero.l}
+
+    El tercero se encarga de añadir los saltos de línea al programa. El primer grupo de reglas añade un salto después de leer la cadena seguida de un espacio salvo la regla de \#include, que añade el salto antes.
+
+    El segundo grupo de reglas consigue que, si el comentario aparece al final de la línea, no se quite de ahí. Finalmente en el tercer grupo hay dos casos especiales del punto y coma donde no se van a añadir saltos: los dos que aparecen dentro de un bucle for y el que cierra una clase.
+
+    La regla del for es un poco más compleja que las demás, por lo que la voy a explicar:
+
+    \begin{itemize}
+        \item \verb|"for ("| La cadena ``for ('' literal
+        \item \verb|[^\;]+| Cualquier caracter 1 o más veces que no sea ``;''. Acepta caracteres hasta llegar a un punto y coma
+        \item \verb|;| Un punto y coma literal
+        \item \verb|{2}| La expresión regular anterior 2 veces. Como hay paréntesis, se refiere a \verb|[^\;]+;|
+        \item \verb|[^\)]+| Cualquier caracter 1 o más veces que no sea ``)''. Acepta caracteres hasta llegar a un paréntesis que cierra
+        \item \verb|")"| Un paréntesis que cierra literal
+    \end{itemize}
+
+    Una vez detectado el for, simplemente lo imprime de nuevo para no modificar su contenido.
+
+    \subsubsection{cuarto.l}
+
+    Finalmente el cuarto fichero añade los tabuladores al código. Para este programa he necesitado utilizar una variable global (\texttt{ntab}) inicializada a 0 para contar cuantos tabuladores tengo que poner y una función auxiliar (\texttt{void tabula()}) para imprimir los tabuladores.
+
+    En cuanto a las reglas, la principal es la primera, que añade a todo \textbackslash n los tabuladores que hagan falta. Para que funcione bien son necesarias las dos siguientes, que aumentan o disminuyen \texttt{ntab} al encontrar una llave que abre o una que cierra.
+
+    Las tres siguientes son por preferencia personal, me gusta que \texttt{private, public y protected} esten menos indentadas que el resto del código. La última regla simplemente elimina unos espacios que sobran de algunas reglas del tercer programa.
+
+\end{document}

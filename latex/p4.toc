@@ -1,0 +1,12 @@
+\babel@toc {spanish}{}
+\contentsline {section}{\numberline {1}Descripción del problema}{2}{section.1}%
+\contentsline {section}{\numberline {2}Descripción de la solución}{3}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Uso}{3}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Carpetas}{3}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Ficheros}{3}{subsection.2.3}%
+\contentsline {subsubsection}{\numberline {2.3.1}Makefile}{3}{subsubsection.2.3.1}%
+\contentsline {subsubsection}{\numberline {2.3.2}script.sh}{3}{subsubsection.2.3.2}%
+\contentsline {subsubsection}{\numberline {2.3.3}primero.l}{4}{subsubsection.2.3.3}%
+\contentsline {subsubsection}{\numberline {2.3.4}segundo.l}{4}{subsubsection.2.3.4}%
+\contentsline {subsubsection}{\numberline {2.3.5}tercero.l}{4}{subsubsection.2.3.5}%
+\contentsline {subsubsection}{\numberline {2.3.6}cuarto.l}{4}{subsubsection.2.3.6}%

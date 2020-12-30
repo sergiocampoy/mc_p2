@@ -2,6 +2,9 @@
 
 all : bin/primero bin/segundo bin/tercero bin/cuarto
 	./script.sh ejemplo
+	./script.sh ejemplo_latex
+	./script.sh cuadro
+	./script.sh malla
 
 clean :
 	rm -rf bin/* resultado/* src/* tmp/*

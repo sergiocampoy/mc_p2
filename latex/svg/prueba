@@ -1,0 +1,5 @@
+#!/bin/bash
+
+basename=${1%.*}
+
+inkscape ${basename}.svg --export-area-drawing --batch-process --export-type=pdf --export-filename=../images/${basename}.pdf

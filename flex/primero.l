@@ -1,6 +1,6 @@
 %option noyywrap
 
-llave [\(\)\{\}\[\]]
+llave [\{\}\[\]]
 op_arit [\+\-\*\/\%\=]
 op_comp "+="|"-="|"*="|"/="|"%="|">>="|"<<="|"&="|"^="|"|="
 op_ment "++"|"--"
@@ -14,6 +14,8 @@ ops {op_arit}|{op_comp}|{op_ment}|{op_rela}|{op_logi}|{op_cout}|"->"
 %%
 
 {llave} { printf(" %s ", yytext); } // añade espacios a ambos lados de las llaves
+\( { printf(" ("); }
+\) { printf(") "); }
 {ops} { printf(" %s ", yytext); } // añade espacios a ambos lados de los operadores
 , { printf(" , "); } // añade espacios a ambos lados de las comas
 
@@ -24,8 +26,10 @@ ops {op_arit}|{op_comp}|{op_ment}|{op_rela}|{op_logi}|{op_cout}|"->"
 "//" { printf(" %s", yytext); BEGIN(comentario_inline); } // comienza a leer un comentario de una linea
 "/*" { printf(" %s", yytext); BEGIN(comentario); } // comienza a leer un comentario multilinea
 
+
 <include>\<[^\>]*\> { printf(yytext); BEGIN(INITIAL); } // lee <fichero>
 <include>\"[^\"]*\" { printf(yytext); BEGIN(INITIAL); } // lee "fichero.h"
+
 
 <comillas_dobles>\" { printf(yytext); BEGIN(INITIAL); } // termina de leer comillas dobles
 <comillas_simples>\' { printf(yytext); BEGIN(INITIAL); } // termina de leer comillas simples

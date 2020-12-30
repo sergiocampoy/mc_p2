@@ -1,0 +1,35 @@
+\ProvidesPackage{package}
+
+\RequirePackage[hidelinks]{hyperref} % índice clickable
+\RequirePackage{amsmath} % ecuaciones alineadas
+\RequirePackage{enumitem} % listas y enumerados custom
+\RequirePackage{graphicx} % insertar imágenes
+\RequirePackage{float} % mejor posicionamiento de imágenes
+
+% tipo de letra
+% \renewcomand{\familydefault}{phv} % font = Helvetica Standard
+\renewcommand*\familydefault{phv}
+
+% tamaño del folio / márgenes (Aqademia de Groctel)
+\RequirePackage{geometry}
+\geometry{
+	a4paper,
+	left     = 2cm,
+	right    = 2cm,
+	top      = 3cm,
+	bottom   = 2.3cm,
+	headsep  = 0.5cm,
+	footskip = 0.75cm
+}
+
+% colores
+\RequirePackage{xcolor}
+
+% TODO: añadir definiciones de colores
+
+% secciones de código
+\RequirePackage{listings}
+
+% TODO: añadir estilo de las secciones de código
+
+% TODO (maybe): definir una función \code{$lenguaje}

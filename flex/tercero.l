@@ -3,22 +3,24 @@
 %%
 
 "; " { printf(";\n"); }
-"; //" { printf("; //"); }
 "} " { printf("}\n"); }
-"} //" { printf("} //"); }
 "{ " { printf("{\n"); }
-"{ //" { printf("{ //"); }
-" #include" { printf("\n#include"); }
 "private: " { printf("private:\n"); }
-"private: //" { printf("private: //"); }
 "public: " { printf("public:\n"); }
-"public: //" { printf("public: //"); }
 "protected: " { printf("protected:\n"); }
+"} else { " { printf("} else {\n"); }
+" #include" { printf("\n#include"); }
+
+"; //" { printf("; //"); }
+"} //" { printf("} //"); }
+"{ //" { printf("{ //"); }
+"private: //" { printf("private: //"); }
+"public: //" { printf("public: //"); }
 "protected: //" { printf("protected: //"); }
-"} else { " { printf("%s\n", yytext); }
 "} else { //" { printf("%s", yytext); }
-"for ("[^\;]+;[^\;]+;[^\)]+")" { printf (yytext); } // apaña el for
-"} ; " { printf("};\n"); }
+
+"for ("([^\;]+;){2}[^\)]+")" { printf (yytext); }
+"} ; " { printf("};\n"); } // final de una clase
 
 %%
 
