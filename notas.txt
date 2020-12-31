@@ -1,1 +1,0 @@
-%x declara "start conditions"

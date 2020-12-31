@@ -1,3 +1,8 @@
+
+/*
+Ejemplo que aparece al principio de la memoria
+*/
+
 // primer fragmento
 for (int i=0; i<10; i++) {
     if (i%2) {

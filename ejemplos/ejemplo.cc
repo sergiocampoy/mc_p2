@@ -1,3 +1,8 @@
+
+/*
+Ejemplo de programa simple que he utilizado para crear los ficheros flex
+*/
+
 #include<iostream>// inline
 #include "string"
 #include <set>
@@ -8,29 +13,30 @@ using namespace std;
 comentario multilinea
 */
 
-class Prueba {
-private:
+class Prueba
+{
+      private:
     int numero;
-public:
+
+      public:
     Prueba(int n) {
-        // normal con tabs
+        // comentario normal indentado
         numero = n;
     }
-    int suma(int n /*comentario multilinea en mitad para tocar los huevos*/) {
+    int suma(int n /*comentario multilinea en mitad */) {
         return numero + n; // inline
     }
 };
 
 int main () {
-    int edad;
-    cout << "cual es tu edad?" << endl;
-    cin>>edad;
-    if (edad > 18) {
-        cout << "Eres mayor de edad!" << endl;
-    } else { // en teoría esto está roto
-        cout << "A casita" << endl;
-    }
-    for (unsigned int i = 0; i < 10; i++) {
-        cout << i << endl;
-    }
+      int edad;
+      cout << "cual es tu edad?" << endl;
+      cin>>edad;
+      if (edad > 18) { cout << "Eres mayor de edad!" << endl; }
+      else { // comentario inline en un else
+         cout << "A casita" << endl;
+      }
+      for (unsigned int i = 0; i < 10; i++) {
+         cout << i << endl;
+      }
 }

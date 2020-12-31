@@ -1,3 +1,8 @@
+
+/*
+Ejemplo de una práctica real de la asignatura Informática Gráfica
+*/
+
 #include "aux.h"
 #include "malla.h"
 #include "menu.h"
